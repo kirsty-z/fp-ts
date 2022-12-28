@@ -4,7 +4,7 @@
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
-    "skipLibCheck": true,
+    "skipLibCheck": false,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
@@ -14,8 +14,25 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "locale": "zh",
+    "newLine": "LF",
+    "experimentalDecorators": true,
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["./*"],
+      "@api/*": ["./services/*"],
+      "@utils/*": ["./utils/*"],
+      "@assets/*": ["./assets/*"],
+      "@components/*": ["./components/*"],
+      "@pages/*": ["./pages/*"],
+      "@redux/*": ["./redux/*"],
+      "@img/*": ["./assets/images/*"],
+      "@sass/*": ["./assets/sass/*"],
+      "@routes/*": ["./routes/*"],
+      "@locales/*": ["./locales/*"]
+    }
   },
-  "include": ["src"],
+  "include": ["./src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
