@@ -12,7 +12,6 @@ export default defineConfig({
       '@assets': resolve(__dirname, './src/assets'),
       '@components': resolve(__dirname, './src/components'),
       '@pages': resolve(__dirname, './src/pages'),
-      '@redux': resolve(__dirname, './src/redux'),
       '@img': resolve(__dirname, './src/assets/images'),
       '@sass': resolve(__dirname, './src/assets/sass'),
       '@routes': resolve(__dirname, './src/routes'),

@@ -26,7 +26,6 @@
       "@assets/*": ["./assets/*"],
       "@components/*": ["./components/*"],
       "@pages/*": ["./pages/*"],
-      "@redux/*": ["./redux/*"],
       "@img/*": ["./assets/images/*"],
       "@sass/*": ["./assets/sass/*"],
       "@routes/*": ["./routes/*"],

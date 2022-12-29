@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from 'antd'
 import { Link } from 'react-router-dom'
-import paths from '../../router/paths'
+import paths from '@routes/pathMap'
 interface Props {}
 
 export default function Page404(): React.ReactElement<Props> {

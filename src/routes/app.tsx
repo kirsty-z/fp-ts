@@ -1,8 +1,10 @@
-import Login from '../page/common/Login'
 import Page404 from '@pages/common/Page404'
-import index from './index'
-import m from './paths'
 import { RouteObject } from 'react-router-dom'
+import Login from '@/pages/common/Login'
+import m from '@routes/pathMap'
+import index from '@routes/index'
+import ClockOne from '@/pages/jotai/ClockOne'
+import ClockTwo from '@/pages/jotai/ClockOneTwo'
 const routes: RouteObject[] = [
   index,
   {
