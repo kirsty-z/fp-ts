@@ -7,6 +7,7 @@ import ClockOne from '@/pages/jotai/ClockOne'
 import ClockTwo from '@/pages/jotai/ClockOneTwo'
 import SwitchArticle from '@/pages/jotai/SwitchArticle'
 import TicTacToe from '@/pages/jotai/TicTacToe'
+import AtomFamily from '@/pages/jotai/AtomFamily'
 const routes: RouteObject = {
   path: paths.home,
   element: <Outlet />,
@@ -38,6 +39,10 @@ const routes: RouteObject = {
         {
           path: paths.jotai.ticTacToe,
           element: <TicTacToe />
+        },
+        {
+          path: paths.jotai.atomFamily,
+          element: <AtomFamily />
         }
       ]
     },

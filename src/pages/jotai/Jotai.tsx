@@ -102,6 +102,9 @@ export default function Jotai() {
       <div>
         <Link to={m.jotai.ticTacToe}>TicTacToe</Link>
       </div>
+      <div>
+        <Link to={m.jotai.atomFamily}>atom-family</Link>
+      </div>
     </>
   )
 }

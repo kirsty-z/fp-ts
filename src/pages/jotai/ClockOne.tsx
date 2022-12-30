@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import m from '@routes/pathMap'
-import Clock from '@/components/fp-ts/jotai/Clock'
+import Clock from '@/components/jotai/Clock'
 export default function ClockOne() {
   return (
     <>

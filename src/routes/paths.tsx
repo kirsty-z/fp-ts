@@ -8,7 +8,8 @@ export default {
       about: 'about'
     },
     switchArticle: 'switch-article',
-    ticTacToe: 'ticTacToe'
+    ticTacToe: 'ticTacToe',
+    atomFamily: 'atomFamily'
   },
   404: '*'
 }

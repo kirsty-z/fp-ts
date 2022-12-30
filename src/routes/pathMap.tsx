@@ -8,7 +8,8 @@ export default {
       about: '/jotai/about'
     },
     switchArticle: '/jotai/switchArticle',
-    ticTacToe: '/jotai/ticTacToe'
+    ticTacToe: '/jotai/ticTacToe',
+    atomFamily: '/jotai/atomFamily'
   },
   404: '*'
 }

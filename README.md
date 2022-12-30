@@ -8,3 +8,11 @@
   7.Writer
   8.Task TaskEither
 ## pattern matching（匹配模式）
+## hasura -query
+## jotai
+  atom
+  useAtom
+  atomFamily
+  atomWithStorage
+  useSetAtom
+  useAtomValue
