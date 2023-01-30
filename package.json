@@ -9,12 +9,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-spring/web": "^9.6.1",
     "antd": "^5.0.7",
     "fp-ts": "^2.13.1",
+    "html-react-parser": "^3.0.7",
     "jotai": "^1.12.0",
     "react": "^18.2.0",
+    "react-confetti": "^6.1.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.6.1"
+    "react-router-dom": "^6.6.1",
+    "react-use": "^17.4.0"
   },
   "devDependencies": {
     "@emotion/css": "^11.10.5",
