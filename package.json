@@ -13,6 +13,7 @@
     "antd": "^5.0.7",
     "fp-ts": "^2.13.1",
     "html-react-parser": "^3.0.7",
+    "html-to-image": "^1.11.11",
     "jotai": "^1.12.0",
     "optics-ts": "^2.4.0",
     "react": "^18.2.0",

@@ -4,7 +4,12 @@ export default function Home() {
   return (
     <>
       <div>home</div>
-      <Link to={m.jotai.index}>jotai</Link>
+      <div>
+        <Link to={m.jotai.index}>jotai</Link>
+      </div>
+      <div>
+        <Link to={m.webgl2.index}>webgl2</Link>
+      </div>
     </>
   )
 }

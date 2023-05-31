@@ -8,6 +8,8 @@ import ClockTwo from '@/pages/jotai/ClockOneTwo'
 import SwitchArticle from '@/pages/jotai/SwitchArticle'
 import TicTacToe from '@/pages/jotai/TicTacToe'
 import AtomFamily from '@/pages/jotai/AtomFamily'
+import { Webgl2 } from '@/pages/webgl2'
+
 const routes: RouteObject = {
   path: paths.home,
   element: <Outlet />,
@@ -46,7 +48,16 @@ const routes: RouteObject = {
         }
       ]
     },
-
+    {
+      path: paths.webgl2.index,
+      element: <Outlet />,
+      children: [
+        {
+          path: paths.webgl2.index,
+          element: <Webgl2 />
+        },
+      ]
+    },
     {
       path: paths[404],
       element: <Page404 />

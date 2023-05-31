@@ -11,5 +11,11 @@ export default {
     ticTacToe: '/jotai/ticTacToe',
     atomFamily: '/jotai/atomFamily'
   },
+  webgl2: {
+    index: "/webgl2",
+    detail: {
+      index: "/webgl2/index",
+    }
+  },
   404: '*'
 }
