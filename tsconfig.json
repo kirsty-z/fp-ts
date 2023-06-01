@@ -15,7 +15,6 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "locale": "zh",
     "newLine": "LF",
     "experimentalDecorators": true,
     "baseUrl": "src",
@@ -32,6 +31,6 @@
       "@locales/*": ["./locales/*"]
     }
   },
-  "include": ["./src"],
+  "include": ["./src", "index.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
