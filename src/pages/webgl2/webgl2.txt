@@ -21,8 +21,7 @@
       gl.vertexAttribPointer(positionLoc, numComponents, type, false, stride, offset);
 
    (2.Uniforms（在单次绘制过程中，它的值对所有顶点都是一样的）
-
-   <通过 uniform 为着色器添加偏移量
+      <通过 uniform 为着色器添加偏移量
 
    (3.纹理（来自 pixels/texels 的数据）
 
@@ -47,53 +46,46 @@
    (1. a_position:唯一输入属性；数据类型 vec2
    (2. u_resolution:uniforms 属性，为画布显示精度；通过 gl.uniformXXX 设置 uniform 的值
    (3. u_color:uniforms 属性，颜色值可以动态设置 uniform vec4 u_color;
-9. 数据类型
+9. a_position: 点的着色器，从缓冲区接收数据
+    a_texCoord：用于将纹理坐标传递给片段着色器
+    u_resolution: 用于传入画布的分辨率
+    u_color: 颜色值可以动态设置 uniform4fv
+    u_image: 用于将纹理图像传递给片段着色器 uniform1i
+    u_translation: 移动到位置 uniform2fv
+    u_rotation:旋转
+    u_scale: 缩放 uniform2fv
+    u_matrix:根据矩阵转换位置  uniformMatrix4fv
+10. 数据类型
    (1. float, vec2, vec3, vec4, mat2, mat3, mat4, int, ivec2, ivec3, ivec4, uint, uvec2, uvec3, uvec4.
-10. translation: uniform4fv
-    u_rotation: uniform2fv
-    u_resolution: uniform2f
-    u_color: uniform4fv
-    u_image: uniform1i
-    u_scale: uniform2fv
-    u_translation: uniform2fv
-11. 二维 m3.translation,m3.rotation,m3.scaling
-    const m3={
-      translation:function translation(tx,ty){
-       return [1,0,0,0,1,0,tx,ty,1]
-      },
-      rotation:function rotation(angleInRadians){
-         const c = Math.cos(angleInRadians)
-         const s = Math.sin(angleInRadians)
-         return [c,-s,0,s,c,0,0,0,1]
-      },
-      scaling:function(sx,sy){
-         return [sx,0,0,0,sy,0,0,0,1]
-      }
-    }
-12. 三维
-   const m4={
-      translation: function (tx, ty, tz) {
-        return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, tx, ty, tz, 1]
-    },
-    xRotation: function (angleInRadians) {
-        var c = Math.cos(angleInRadians)
-        var s = Math.sin(angleInRadians)
+         gl.uniform1f (floatUniformLoc, v);                 // 对于浮动
+         gl.uniform1fv(floatUniformLoc, [v]);               // 对于 float 或 float 数组
+         gl.uniform2f (vec2UniformLoc,  v0, v1);            // 对于 vec2
+         gl.uniform2fv(vec2UniformLoc,  [v0, v1]);          // 对于 vec2 或 vec2 数组
+         gl.uniform3f (vec3UniformLoc,  v0, v1, v2);        // 对于 vec3
+         gl.uniform3fv(vec3UniformLoc,  [v0, v1, v2]);      // 对于 vec3 或 vec3 数组
+         gl.uniform4f (vec4UniformLoc,  v0, v1, v2, v4);    // 对于 vec4
+         gl.uniform4fv(vec4UniformLoc,  [v0, v1, v2, v4]);  // 对于 vec4 或 vec4 数组
 
-        return [1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1]
-    },
-    yRotation: function (angleInRadians) {
-        var c = Math.cos(angleInRadians)
-        var s = Math.sin(angleInRadians)
+         gl.uniformMatrix2fv(mat2UniformLoc, false, [  4x element array ])  // 对于 mat2 或 mat2 数组
+         gl.uniformMatrix3fv(mat3UniformLoc, false, [  9x element array ])  // 对于 mat3 或 mat3 数组
+         gl.uniformMatrix4fv(mat4UniformLoc, false, [ 16x element array ])  // 对于 mat4 或 mat4 数组
 
-        return [c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1]
-    },
-    zRotation: function (angleInRadians) {
-        var c = Math.cos(angleInRadians)
-        var s = Math.sin(angleInRadians)
+         gl.uniform1i (intUniformLoc,   v);                 // 对于整数
+         gl.uniform1iv(intUniformLoc, [v]);                 // 对于 int 或 int 数组
+         gl.uniform2i (ivec2UniformLoc, v0, v1);            // 对于 ivec2
+         gl.uniform2iv(ivec2UniformLoc, [v0, v1]);          // 对于 ivec2 或 ivec2 数组
+         gl.uniform3i (ivec3UniformLoc, v0, v1, v2);        // 对于 ivec3
+         gl.uniform3iv(ivec3UniformLoc, [v0, v1, v2]);      // 对于 ivec3 或 ivec3 数组
+         gl.uniform4i (ivec4UniformLoc, v0, v1, v2, v4);    // 对于 ivec4
+         gl.uniform4iv(ivec4UniformLoc, [v0, v1, v2, v4]);  // 对于 ivec4 或 ivec4 数组
 
-        return [c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]
-    },
-    scaling: function (sx, sy, sz) {
-        return [sx, 0, 0, 0, 0, sy, 0, 0, 0, 0, sz, 0, 0, 0, 0, 1]
-    }
-   }
+         gl.uniform1i (sampler2DUniformLoc,   v);           // 对于 sampler2D（纹理）
+         gl.uniform1iv(sampler2DUniformLoc, [v]);           // 对于 sampler2D 或 sampler2D 数组
+
+         gl.uniform1i (samplerCubeUniformLoc,   v);         // 对于 samplerCube（纹理）
+         gl.uniform1iv(samplerCubeUniformLoc, [v]);         // 对于 samplerCube 或 samplerCube 数组
+
+11. 二维 m3  /2d/index
+12. 三维 m4  /3d/index
+13. 透视： 远近
+14. 摄像机： xyz

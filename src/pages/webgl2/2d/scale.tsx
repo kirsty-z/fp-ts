@@ -115,11 +115,11 @@ export const Scale: FC<{}> = ({ }) => {
   return <div style={{ border: "1px solid green" }}>
     <canvas ref={canvasRef} style={{ border: "1px solid red" }}></canvas>
     <div style={{ display: "flex" }}>
-      <div>X: </div>
+      <div>Scale X: </div>
       <Slider style={{ width: 200 }} step={0.01} min={-1} max={2} value={scaleX} onChange={setScaleX} />
     </div>
     <div style={{ display: "flex" }}>
-      <div>Y: </div>
+      <div>scale Y: </div>
       <Slider style={{ width: 200 }} step={0.01} min={-1} max={2} value={scaleY} onChange={setScaleY} />
     </div>
   </div>

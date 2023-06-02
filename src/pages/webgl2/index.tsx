@@ -3,13 +3,17 @@ import { FC, useEffect, useRef } from "react"
 import { Triangles } from "./2d/triangles";
 import { Rectangle } from "./2d/rectangle";
 import { RandomTriangles } from "./2d/random-triangles";
-import { TwoRectangleTriangle } from "./2d/tow-rectangle-triangle";
+import { TwoRectangleTriangle } from "./2d/tow-rectangle-to-triangle";
 import { Translation } from "./2d/translation";
 import { Rotate } from "./2d/rotate";
 import { ImageModule } from "./2d/image";
 import { OneRectangle } from "./2d/one-rectangle";
 import { Scale } from "./2d/scale";
-import { OrthographicProjection } from "./3d/orthographic-projection";
+import { OrthographicProjection } from "./3d/orthographic-projection-1";
+import { All } from "./2d/all";
+import { OrthographicProjection2 } from "./3d/orthographic-projection-2";
+import { PerspectiveProjection } from "./3d/perspective-projection";
+import { Camera } from "./3d/camera";
 
 // 创建着色器
 export function createShader(gl: WebGL2RenderingContext, type: any, source: string) {
@@ -39,11 +43,15 @@ export function createProgram(gl: WebGL2RenderingContext, vertexShader: WebGLSha
 export const Webgl2: FC<{}> = ({ }) => {
   return <>
     <div style={{ display: "flex", flexWrap: "wrap" }}>
+      <Camera />
+      <PerspectiveProjection />
+      <OrthographicProjection2 />
       <OrthographicProjection />
     </div>
     <div style={{ display: "flex", flexWrap: "wrap" }}>
-      <Scale />
+      <All />
       <ImageModule />
+      <Scale />
       <Rotate />
       <Translation />
       <Triangles />
@@ -142,6 +150,15 @@ export const m4 = {
   scaling: function (sx: number, sy: number, sz: number) {
     return [sx, 0, 0, 0, 0, sy, 0, 0, 0, 0, sz, 0, 0, 0, 0, 1]
   },
+  projection: function (width: number, height: number, depth: number) {
+    //注意：此矩阵翻转Y轴，因此0位于顶部
+    return [
+      2 / width, 0, 0, 0,
+      0, -2 / height, 0, 0,
+      0, 0, 2 / depth, 0,
+      -1, 1, 0, 1,
+    ];
+  },
   multiply: function (a: number[], b: number[]) {
     var b00 = b[0 * 4 + 0];
     var b01 = b[0 * 4 + 1];
@@ -195,4 +212,29 @@ export const m4 = {
       b30 * a03 + b31 * a13 + b32 * a23 + b33 * a33,
     ];
   },
+  translate: function (m: number[], tx: number, ty: number, tz: number) {
+    return m4.multiply(m, m4.translation(tx, ty, tz));
+  },
+
+  xRotate: function (m: number[], angleInRadians: number) {
+    return m4.multiply(m, m4.xRotation(angleInRadians));
+  },
+
+  yRotate: function (m: number[], angleInRadians: number) {
+    return m4.multiply(m, m4.yRotation(angleInRadians));
+  },
+
+  zRotate: function (m: number[], angleInRadians: number) {
+    return m4.multiply(m, m4.zRotation(angleInRadians));
+  },
+
+  scale: function (m: number[], sx: number, sy: number, sz: number) {
+    return m4.multiply(m, m4.scaling(sx, sy, sz));
+  },
+}
+export const degToRad = (deg: number) => {
+  return deg * Math.PI / 180;
+}
+export const radToDeg = (rad: number) => {
+  return 180 * rad / Math.PI;
 }

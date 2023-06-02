@@ -107,13 +107,13 @@ export const Translation: FC<{}> = ({ }) => {
     </div>
     <div style={{ width: 300, margin: "0 auto" }}>
       <div style={{ display: "flex", alignItems: "center" }}>
-        <div>x: </div>
+        <div>translate x: </div>
         <div style={{ flex: 1 }}>
           <Slider min={0} max={maxX} onChange={setX} value={x} />
         </div>
       </div>
       <div style={{ display: "flex", alignItems: "center" }}>
-        <div>y: </div>
+        <div>translate y: </div>
         <div style={{ flex: 1 }}>
           <Slider min={0} max={maxY} onChange={setY} value={y} />
         </div>
