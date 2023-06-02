@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef, useState } from "react";
-import { createProgram, createShader } from ".";
+import { createProgram, createShader } from "../index";
 import { Select } from "antd";
 import img from "@assets/img/leaves.jpg"
 type Type = "normal" | "gaussianBlur" | "gaussianBlur2" | "gaussianBlur3" | "unsharpen" | "sharpness" | "sharpen" | "edgeDetect" | "edgeDetect2" | "edgeDetect3" | "edgeDetect4" | "edgeDetect5" | "edgeDetect6" | "sobelHorizontal" | "sobelVertical" | "previtHorizontal" | "previtVertical" | "boxBlur" | "triangleBlur" | "emboss"

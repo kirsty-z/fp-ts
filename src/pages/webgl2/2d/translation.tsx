@@ -1,6 +1,6 @@
 import { Slider } from "antd";
 import { FC, useEffect, useRef, useState } from "react";
-import { createProgram, createShader } from ".";
+import { createProgram, createShader } from "../index";
 
 var vertexShaderSource = `#version 300 es
 

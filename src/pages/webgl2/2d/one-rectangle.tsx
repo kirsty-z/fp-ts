@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef } from "react";
-import { createProgram, createShader } from ".";
+import { createProgram, createShader } from "../index";
 
 export const OneRectangle: FC<{}> = ({ }) => {
   const refCanvas = useRef<HTMLCanvasElement>(null)
