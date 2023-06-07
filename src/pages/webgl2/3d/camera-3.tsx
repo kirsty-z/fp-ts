@@ -1,5 +1,181 @@
-let MatType = Float32Array;
-export const m4 = {
+import { FC, useEffect, useRef, useState } from "react";
+import { createProgram, createShader, degToRad, radToDeg } from "..";
+import { Slider } from "antd";
+import { HeadData } from "./headdata";
+
+var vertexShaderSource = `#version 300 es
+
+in vec4 a_position;
+in vec4 a_color;
+uniform mat4 u_matrix;
+out vec4 v_color;
+void main() {
+  gl_Position = u_matrix * a_position;
+  v_color = a_color;
+}
+`;
+var fragmentShaderSource = `#version 300 es
+
+precision highp float;
+in vec4 v_color;
+out vec4 outColor;
+void main() {
+  outColor = v_color;
+}
+`;
+// 三维相加
+export const Camera3: FC<{}> = ({ }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [fieldOfViewInRadians, setFieldOfViewInRadians] = useState(degToRad(60))
+  const [targetAngleRadians, setTargetAngleRadians] = useState(0)
+  const [target, setTarget] = useState([0, 200, 300])
+  const [targetRadius, setTargetRadius] = useState(300)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (canvas) {
+      const gl = canvas.getContext("webgl2")
+      if (!gl) return
+      const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource) as WebGLShader
+      const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource) as WebGLShader
+      const program = createProgram(gl, vertexShader, fragmentShader) as WebGLProgram
+      const positionAttributeLocation = gl.getAttribLocation(program, "a_position")
+      const colorAttributeLocation = gl.getAttribLocation(program, "a_color")
+      const matrixLocation = gl.getUniformLocation(program, "u_matrix")
+      const positionBuffer = gl.createBuffer()
+      const vao = gl.createVertexArray()
+      gl.bindVertexArray(vao)
+      gl.enableVertexAttribArray(positionAttributeLocation)
+      // data
+      gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
+      var numVertices = setGeometry(gl);
+      var size = 3;
+      var type = gl.FLOAT;
+      var normalize = false;
+      var stride = 0;
+      var offset = 0;
+      gl.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride, offset);
+      // color
+      var colorBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+      setColors(gl);
+      gl.enableVertexAttribArray(colorAttributeLocation);
+
+      var size = 3;
+      var type1 = gl.UNSIGNED_BYTE;
+      var normalize = true;
+      var stride = 0;
+      var offset = 0;
+      gl.vertexAttribPointer(
+        colorAttributeLocation, size, type1, normalize, stride, offset);
+
+      // 告诉WebGL如何从剪辑空间转换为像素
+      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      // 开启深度测试
+      gl.enable(gl.DEPTH_TEST);
+      gl.enable(gl.CULL_FACE);
+      gl.useProgram(program);
+      gl.bindVertexArray(vao);
+      // 计算矩阵
+      var aspect = gl.canvas.width / gl.canvas.height;
+      var zNear = 1;
+      var zFar = 2000;
+      var projectionMatrix = m4.perspective(fieldOfViewInRadians, aspect, zNear, zFar);
+      var cameraTarget = [0, -100, 0];
+      var cameraPosition = [500, 300, 500];
+      var up = [0, 1, 0];
+
+      // 计算相机的朝向矩阵
+      var cameraMatrix = m4.lookAt(cameraPosition, cameraTarget, up);
+
+      // 根据相机矩阵获得视图矩阵。
+      var viewMatrix = m4.inverse(cameraMatrix);
+
+      // 创建视图投影矩阵。这两种观点都适用
+      //并移动世界，使相机有效地成为原点
+      var viewProjectionMatrix = m4.multiply(projectionMatrix, viewMatrix);
+
+      var deep = 5;
+      var across = 5;
+      for (var zz = 0; zz < deep; ++zz) {
+        var v = zz / (deep - 1);
+        var z = (v - .5) * deep * 150;
+        for (var xx = 0; xx < across; ++xx) {
+          var u = xx / (across - 1);
+          var x = (u - .5) * across * 150;
+          var matrix = m4.lookAt([x, 0, z], target, up);
+          drawHead(matrix, viewProjectionMatrix, matrixLocation, numVertices, gl);
+        }
+      }
+      drawHead(m4.translation(target[0], target[1], target[2]), viewProjectionMatrix, matrixLocation, numVertices, gl);
+
+    }
+  }, [targetAngleRadians, target])
+
+
+  return <div style={{ border: "1px solid pink" }}>
+    <canvas ref={canvasRef} style={{ border: "1px solid red" }}></canvas>
+    <div style={{ display: "flex" }}>
+      <div>targetAngle: </div>
+      <Slider style={{ width: 200 }} min={-360} max={360} value={radToDeg(targetAngleRadians)} onChange={e => {
+        setTargetAngleRadians(degToRad(e))
+        target[0] = Math.sin(targetAngleRadians) * targetRadius
+        target[2] = Math.cos(targetAngleRadians) * targetRadius;
+        setTarget([...target])
+      }} />
+    </div>
+    <div style={{ display: "flex" }}>
+      <div>targetHeight: </div>
+      <Slider style={{ width: 200 }} min={50} max={300} value={target[1]} onChange={e => {
+        target[1] = e
+        setTarget([...target])
+      }} />
+    </div>
+  </div>
+}
+function drawHead(matrix: number[], viewProjectionMatrix: number[], matrixLocation: WebGLUniformLocation | null, numVertices: number, gl: WebGL2RenderingContext) {
+  // multiply that with the viewProjecitonMatrix
+  matrix = m4.multiply(viewProjectionMatrix, matrix);
+
+  // Set the matrix.
+  gl.uniformMatrix4fv(matrixLocation, false, matrix);
+
+  // Draw the geometry.
+  var primitiveType = gl.TRIANGLES;
+  var offset = 0;
+  gl.drawArrays(primitiveType, offset, numVertices);
+}
+function setGeometry(gl: WebGL2RenderingContext) {
+  var positions = new Float32Array(HeadData.positions);
+  var matrix = m4.scale(m4.yRotation(Math.PI), 6, 6, 6);
+  for (var ii = 0; ii < positions.length; ii += 3) {
+    var vector = m4.transformVector(matrix, [positions[ii + 0], positions[ii + 1], positions[ii + 2], 1]);
+    positions[ii + 0] = vector[0];
+    positions[ii + 1] = vector[1];
+    positions[ii + 2] = vector[2];
+  }
+
+  gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
+  return positions.length / 3;
+}
+
+function setColors(gl: WebGL2RenderingContext) {
+  var normals = HeadData.normals;
+  var colors = new Uint8Array(normals.length);
+  var offset = 0;
+  for (var ii = 0; ii < colors.length; ii += 3) {
+    for (var jj = 0; jj < 3; ++jj) {
+      colors[offset] = (normals[offset] * 0.5 + 0.5) * 255;
+      ++offset;
+    }
+  }
+  gl.bufferData(gl.ARRAY_BUFFER, colors, gl.STATIC_DRAW);
+}
+
+var m4 = {
+
   perspective: function (fieldOfViewInRadians: number, aspect: number, near: number, far: number) {
     var f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewInRadians);
     var rangeInv = 1.0 / (near - far);
@@ -148,19 +324,7 @@ export const m4 = {
   scale: function (m: number[], sx: number, sy: number, sz: number) {
     return m4.multiply(m, m4.scaling(sx, sy, sz));
   },
-  transformPoint: function transformPoint(m: number[], v: number[], dst: number[]) {
 
-    dst = dst || new MatType(3);
-    var v0 = v[0];
-    var v1 = v[1];
-    var v2 = v[2];
-    var d = v0 * m[0 * 4 + 3] + v1 * m[1 * 4 + 3] + v2 * m[2 * 4 + 3] + m[3 * 4 + 3];
-    dst[0] = (v0 * m[0 * 4 + 0] + v1 * m[1 * 4 + 0] + v2 * m[2 * 4 + 0] + m[3 * 4 + 0]) / d;
-    dst[1] = (v0 * m[0 * 4 + 1] + v1 * m[1 * 4 + 1] + v2 * m[2 * 4 + 1] + m[3 * 4 + 1]) / d;
-    dst[2] = (v0 * m[0 * 4 + 2] + v1 * m[1 * 4 + 2] + v2 * m[2 * 4 + 2] + m[3 * 4 + 2]) / d;
-
-    return dst;
-  },
   inverse: function (m: number[]) {
     var m00 = m[0 * 4 + 0];
     var m01 = m[0 * 4 + 1];
@@ -295,26 +459,5 @@ export const m4 = {
     }
     return dst;
   },
-  orthographic: function orthographic(left: number, right: number, bottom: number, top: number, near: number, far: number, dst: number[]) {
-    dst = dst || new MatType(16);
 
-    dst[0] = 2 / (right - left);
-    dst[1] = 0;
-    dst[2] = 0;
-    dst[3] = 0;
-    dst[4] = 0;
-    dst[5] = 2 / (top - bottom);
-    dst[6] = 0;
-    dst[7] = 0;
-    dst[8] = 0;
-    dst[9] = 0;
-    dst[10] = 2 / (near - far);
-    dst[11] = 0;
-    dst[12] = (left + right) / (left - right);
-    dst[13] = (bottom + top) / (bottom - top);
-    dst[14] = (near + far) / (near - far);
-    dst[15] = 1;
-
-    return dst;
-  }
 };

@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef } from "react";
 
-export const OrthographicProjection: FC<{}> = ({ }) => {
+export const Example: FC<{}> = ({ }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {

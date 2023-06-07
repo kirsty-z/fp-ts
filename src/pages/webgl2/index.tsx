@@ -14,6 +14,14 @@ import { All } from "./2d/all";
 import { OrthographicProjection2 } from "./3d/orthographic-projection-2";
 import { PerspectiveProjection } from "./3d/perspective-projection";
 import { Camera } from "./3d/camera";
+import { Camera2 } from "./3d/camera-2";
+import { Camera3 } from "./3d/camera-3";
+import { Texcoord } from "./texture/texcoord";
+import { TexcoordWrap } from "./texture/texcoord-wrap";
+import { TexcoordMipmap } from "./texture/texcoord-mipmap";
+import { TexcoordMipmap1 } from "./texture/texcoord-mipmap-1";
+import { Texcoord3dData } from "./texture/texcoord-3d-data";
+import { TexcoordMultiple } from "./texture/texcoord-multiple";
 
 // 创建着色器
 export function createShader(gl: WebGL2RenderingContext, type: any, source: string) {
@@ -43,13 +51,21 @@ export function createProgram(gl: WebGL2RenderingContext, vertexShader: WebGLSha
 export const Webgl2: FC<{}> = ({ }) => {
   return <>
     <div style={{ display: "flex", flexWrap: "wrap" }}>
+      <TexcoordMultiple />
+      <Texcoord3dData />
+      <TexcoordMipmap1 />
+      <TexcoordMipmap />
+      <TexcoordWrap />
+      <Texcoord />
+      {/* <Camera3 />
+      <Camera2 />
       <Camera />
       <PerspectiveProjection />
       <OrthographicProjection2 />
-      <OrthographicProjection />
+      <OrthographicProjection /> */}
     </div>
     <div style={{ display: "flex", flexWrap: "wrap" }}>
-      <All />
+      {/* <All />
       <ImageModule />
       <Scale />
       <Rotate />
@@ -58,7 +74,7 @@ export const Webgl2: FC<{}> = ({ }) => {
       <Rectangle />
       <RandomTriangles />
       <TwoRectangleTriangle />
-      <OneRectangle />
+      <OneRectangle /> */}
     </div>
   </>
 }

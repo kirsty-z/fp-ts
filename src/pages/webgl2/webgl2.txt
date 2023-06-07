@@ -1,5 +1,5 @@
 1. webgl api 是为这些函数对的运行来设置状态：设置一堆状态，然后调用 gl.drawArrays 和 gl.drawElements 在 gpu 上运行着色器
-2. 着色器：
+2. 着色器有四种方法能够接收数据：
    (1.属性，缓冲区，和顶点数组
    (2.Uniforms(执行着色器程序前设置的全局变量)
    (3.纹理（能够在着色器程序中随机访问的数组数据）
@@ -34,13 +34,15 @@
    （4.查找顶点数据放在哪里(a_position) 查找颜色(a_color) 查找矩阵（u_matrix） 。。。
    （5.创建缓冲区（createBuffer）绑定缓冲区（bindBuffer）
    （6.创建属性状态集合（createVertexArray） 绑定属性状态集合（bindVertexArray）
-   （7.启用属性（enableVertexAttribArray）
-   （8.诉属性如何从 positionBuffer 中获取数据（size,type,normalize,stride,offset）(vertexAttribPointer)
-   （9.从剪辑空间转换为像素(viewport)
-   （10.清理 canvas（clearColor，clear）
-   （11.使用程序（useProgram）
-   （12.绑定属性/缓冲区集（bindVertexArray）
-   （13.设置属性（primitiveType,offset,count）draw（drawArrays）
+   （7.绑定数据 gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+   （8.启用属性（enableVertexAttribArray）
+   （9.填入数据(gl.bufferData)
+   （10.诉属性如何从 positionBuffer 中获取数据（size,type,normalize,stride,offset）(vertexAttribPointer)
+   （11.从剪辑空间转换为像素(viewport)
+   （12.清理 canvas（clearColor，clear）
+   （13.使用程序（useProgram）
+   （14.绑定属性/缓冲区集（bindVertexArray）
+   （15.设置属性（primitiveType,offset,count）draw（drawArrays）
 
 8. 属性
    (1. a_position:唯一输入属性；数据类型 vec2
@@ -87,5 +89,37 @@
 
 11. 二维 m3  /2d/index
 12. 三维 m4  /3d/index
-13. 透视： 远近
-14. 摄像机： xyz
+13. 三维透视： 远近
+14. 三维摄像机： xyz
+      矩阵：
+         Xx  Xy  Xz   <- x axis
+         Yx  Yy  Yz   <- y axis
+         Zx  Zy  Zz   <- z axis
+         Tx  Ty  Tz   <- 相机位置
+
+15. 纹理
+   (1.创建纹理  gl.createTexture
+   (2.使用纹理单元0  gl.activeTexture(gl.TEXTURE + 0)
+   (3.绑定纹理 gl.bindTexture(gl.TEXTURE_2D,texture)绑定到纹理单元0的TEXTURE_2D绑定点
+   (4.用1x1蓝色像素填充纹理:gl.texImage2D()
+
+16.数据纹理
+   格式             数据类型                  通道数/单像素字节数
+   RGBA             UNSIGNED_BYTE            4
+   RGB              UNSIGNED_BYTE            3
+   RGBA             UNSIGNED_SHORT_4_4_4_4   2
+   RGBA             UNSIGNED_SHORT_5_5_5_1   2
+   RGB	           UNSIGNED_SHORT_5_6_5	3	2
+   LUMINANCE_ALPHA  UNSIGNED_BYTE          	2
+   LUMINANCE	     UNSIGNED_BYTE	         1
+   ALPHA	           UNSIGNED_BYTE	         1
+
+17. 纹理属性
+   gl.generateMipmap：每个子图都是前一级的双线性插值， gl.generateMipmap 它根据原始图像创建所有的缩小级别
+      NEAREST = 从最大的贴图中选择 1 个像素
+      LINEAR = 从最大的贴图中选择 4 个像素然后混合
+      NEAREST_MIPMAP_NEAREST = 选择最合适的贴图，然后从上面找到一个像素
+      LINEAR_MIPMAP_NEAREST = 选择最合适的贴图，然后取出 4 个像素进行混合
+      NEAREST_MIPMAP_LINEAR = 选择最合适的两个贴图，从每个上面选择 1 个像素然后混合
+      LINEAR_MIPMAP_LINEAR = 选择最合适的两个贴图，从每个上选择 4 个像素然后混合
+   gl.texParameter：设置筛选器
