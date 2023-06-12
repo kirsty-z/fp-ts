@@ -367,7 +367,7 @@ export const Camera2: FC<{}> = ({ }) => {
       // 计算相机的朝向矩阵
       var cameraMatrix = m4.lookAt(cameraPosition, fPosition, up);
 
-      // 根据相机矩阵获得视图矩阵。
+      // 根据相机矩阵获得视图矩阵
       var viewMatrix = m4.inverse(cameraMatrix);
 
       // 创建视图投影矩阵。这两种观点都适用

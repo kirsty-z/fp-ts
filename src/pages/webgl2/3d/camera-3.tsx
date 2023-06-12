@@ -119,6 +119,7 @@ export const Camera3: FC<{}> = ({ }) => {
     <canvas ref={canvasRef} style={{ border: "1px solid red" }}></canvas>
     <div style={{ display: "flex" }}>
       <div>targetAngle: </div>
+      {/* target x z  */}
       <Slider style={{ width: 200 }} min={-360} max={360} value={radToDeg(targetAngleRadians)} onChange={e => {
         setTargetAngleRadians(degToRad(e))
         target[0] = Math.sin(targetAngleRadians) * targetRadius
@@ -128,6 +129,7 @@ export const Camera3: FC<{}> = ({ }) => {
     </div>
     <div style={{ display: "flex" }}>
       <div>targetHeight: </div>
+      {/* target y */}
       <Slider style={{ width: 200 }} min={50} max={300} value={target[1]} onChange={e => {
         target[1] = e
         setTarget([...target])
@@ -139,10 +141,10 @@ function drawHead(matrix: number[], viewProjectionMatrix: number[], matrixLocati
   // multiply that with the viewProjecitonMatrix
   matrix = m4.multiply(viewProjectionMatrix, matrix);
 
-  // Set the matrix.
+  // 设置矩阵
   gl.uniformMatrix4fv(matrixLocation, false, matrix);
 
-  // Draw the geometry.
+  // 绘制几何图形
   var primitiveType = gl.TRIANGLES;
   var offset = 0;
   gl.drawArrays(primitiveType, offset, numVertices);
@@ -174,7 +176,7 @@ function setColors(gl: WebGL2RenderingContext) {
   gl.bufferData(gl.ARRAY_BUFFER, colors, gl.STATIC_DRAW);
 }
 
-var m4 = {
+var m4: any = {
 
   perspective: function (fieldOfViewInRadians: number, aspect: number, near: number, far: number) {
     var f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewInRadians);
