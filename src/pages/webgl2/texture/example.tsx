@@ -1,5 +1,13 @@
 import { FC, useEffect, useRef } from "react";
 
+const vertexShaderSource = `#version 300 es
+
+`;
+
+const fragmentShaderSource = `#version 300 es
+
+`;
+
 export const Example: FC<{}> = ({ }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 

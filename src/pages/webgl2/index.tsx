@@ -51,18 +51,18 @@ export function createProgram(gl: WebGL2RenderingContext, vertexShader: WebGLSha
 export const Webgl2: FC<{}> = ({ }) => {
   return <>
     <div style={{ display: "flex", flexWrap: "wrap" }}>
-      <TexcoordMultiple />
+      {/* <TexcoordMultiple />
       <Texcoord3dData />
       <TexcoordMipmap1 />
       <TexcoordMipmap />
-      <TexcoordWrap />
+      <TexcoordWrap /> */}
       <Texcoord />
-      {/* <Camera3 />
+      <Camera3 />
       <Camera2 />
       <Camera />
       <PerspectiveProjection />
       <OrthographicProjection2 />
-      <OrthographicProjection /> */}
+      <OrthographicProjection />
     </div>
     <div style={{ display: "flex", flexWrap: "wrap" }}>
       {/* <All />

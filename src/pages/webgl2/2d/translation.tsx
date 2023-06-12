@@ -15,7 +15,7 @@ uniform vec2 u_rotation;
 // all shaders have a main function
 void main() {
 
-  // convert the position from pixels to 0.0 to 1.0
+  // 将矩形从像素转换为 0.0 到 1.0
   vec2 zeroToOne = a_position / u_resolution;
 
   // convert from 0->1 to 0->2
@@ -34,7 +34,7 @@ precision highp float;
 
 uniform vec4 u_color;
 
-// we need to declare an output for the fragment shader
+// 需要声明片段着色器的输出
 out vec4 outColor;
 
 void main() {

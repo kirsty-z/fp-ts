@@ -20,7 +20,8 @@
     "react-confetti": "^6.1.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.6.1",
-    "react-use": "^17.4.0"
+    "react-use": "^17.4.0",
+    "twgl.js": "^5.3.1"
   },
   "devDependencies": {
     "@emotion/css": "^11.10.5",

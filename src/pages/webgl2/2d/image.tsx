@@ -5,21 +5,21 @@ import img from "@assets/img/leaves.jpg"
 type Type = "normal" | "gaussianBlur" | "gaussianBlur2" | "gaussianBlur3" | "unsharpen" | "sharpness" | "sharpen" | "edgeDetect" | "edgeDetect2" | "edgeDetect3" | "edgeDetect4" | "edgeDetect5" | "edgeDetect6" | "sobelHorizontal" | "sobelVertical" | "previtHorizontal" | "previtVertical" | "boxBlur" | "triangleBlur" | "emboss"
 var vertexShaderSource = `#version 300 es
 
-// an attribute is an input (in) to a vertex shader.
-// It will receive data from a buffer
+// 属性是顶点着色器的输入 (in)
+// 它将从缓冲区接收数据
 in vec2 a_position;
 in vec2 a_texCoord;
 
-// Used to pass in the resolution of the canvas
+// 用于传入画布的分辨率
 uniform vec2 u_resolution;
 
-// Used to pass the texture coordinates to the fragment shader
+// 用于将纹理坐标传递给片段着色器
 out vec2 v_texCoord;
 
-// all shaders have a main function
+// 所有着色器都有一个主要功能
 void main() {
 
-  // convert the position from pixels to 0.0 to 1.0
+  // 将位置从像素转换为0.0到1.0
   vec2 zeroToOne = a_position / u_resolution;
 
   // convert from 0->1 to 0->2
@@ -30,16 +30,16 @@ void main() {
 
   gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
 
-  // pass the texCoord to the fragment shader
-  // The GPU will interpolate this value between points.
+  // 将texCoord传递到片段着色器
+  // GPU将在点之间对该值进行插值。
   v_texCoord = a_texCoord;
 }
 `;
 
 var fragmentShaderSource = `#version 300 es
 
-// fragment shaders don't have a default precision so we need
-// to pick one. highp is a good default. It means "high precision"
+// 片段着色器没有默认精度，因此我们需要
+//选择一个。highp是一个很好的默认值。意思是“高精度”
 precision highp float;
 
 // our texture
@@ -49,15 +49,13 @@ uniform sampler2D u_image;
 uniform float u_kernel[9];
 uniform float u_kernelWeight;
 
-// the texCoords passed in from the vertex shader.
+// 从顶点着色器传入的texCoords。
 in vec2 v_texCoord;
 
-// we need to declare an output for the fragment shader
+// 我们需要声明片段着色器的输出
 out vec4 outColor;
-
 void main() {
   vec2 onePixel = vec2(1) / vec2(textureSize(u_image, 0));
-
   vec4 colorSum =
       texture(u_image, v_texCoord + onePixel * vec2(-1, -1)) * u_kernel[0] +
       texture(u_image, v_texCoord + onePixel * vec2( 0, -1)) * u_kernel[1] +
@@ -121,9 +119,11 @@ export const ImageModule: FC<{}> = ({ }) => {
         var offset = 0;        // start at the beginning of the buffer
         gl.vertexAttribPointer(
           texCoordAttributeLocation, size, type, normalize, stride, offset);
+        // 创建纹理
         var texture = gl.createTexture();
         gl.activeTexture(gl.TEXTURE0 + 0);
         gl.bindTexture(gl.TEXTURE_2D, texture);
+        // 设置参数以便我们可以渲染任何尺寸的图像。
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
@@ -132,12 +132,8 @@ export const ImageModule: FC<{}> = ({ }) => {
         var internalFormat = gl.RGBA;   // format we want in the texture
         var srcFormat = gl.RGBA;        // format of data we are supplying
         var srcType = gl.UNSIGNED_BYTE; // type of data we are supplying
-        gl.texImage2D(gl.TEXTURE_2D,
-          mipLevel,
-          internalFormat,
-          srcFormat,
-          srcType,
-          image);
+        // 将图像上传到纹理中。
+        gl.texImage2D(gl.TEXTURE_2D, mipLevel, internalFormat, srcFormat, srcType, image);
         gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
           0, 0,
