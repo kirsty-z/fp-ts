@@ -10,6 +10,12 @@ export default function Home() {
       <div>
         <Link to={m.webgl2.index}>webgl2</Link>
       </div>
+      <div>
+        <Link to={m.test.index}>camera</Link>
+      </div>
+      <div>
+        <Link to={m.three.index}>three</Link>
+      </div>
     </>
   )
 }

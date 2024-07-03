@@ -1,14 +1,17 @@
-import Home from '@/pages/Index'
-import paths from '@routes/pathMap'
-import { Outlet, RouteObject } from 'react-router-dom'
+import { Camera } from '@/components/test/camera'
 import Page404 from '@/pages/common/Page404'
-import Jotai from '@/pages/jotai/Jotai'
+import Home from '@/pages/Index'
+import AtomFamily from '@/pages/jotai/AtomFamily'
 import ClockOne from '@/pages/jotai/ClockOne'
 import ClockTwo from '@/pages/jotai/ClockOneTwo'
+import Jotai from '@/pages/jotai/Jotai'
 import SwitchArticle from '@/pages/jotai/SwitchArticle'
 import TicTacToe from '@/pages/jotai/TicTacToe'
-import AtomFamily from '@/pages/jotai/AtomFamily'
+import { ThreeModal } from '@/pages/three'
+import { One } from '@/pages/three/one'
 import { Webgl2 } from '@/pages/webgl2'
+import paths from '@routes/pathMap'
+import { Outlet, RouteObject } from 'react-router-dom'
 
 const routes: RouteObject = {
   path: paths.home,
@@ -55,7 +58,31 @@ const routes: RouteObject = {
         {
           path: paths.webgl2.index,
           element: <Webgl2 />
+        }
+      ]
+    },
+    {
+      path: paths.three.index,
+      element: <Outlet />,
+      children: [
+        {
+          path: paths.three.index,
+          element: <ThreeModal />
         },
+        {
+          path: paths.three.one,
+          element: <One />
+        }
+      ]
+    },
+    {
+      path: paths.test.index,
+      element: <Outlet />,
+      children: [
+        {
+          path: paths.test.index,
+          element: <Camera />
+        }
       ]
     },
     {

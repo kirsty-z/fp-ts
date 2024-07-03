@@ -12,10 +12,17 @@ export default {
     atomFamily: '/jotai/atomFamily'
   },
   webgl2: {
-    index: "/webgl2",
+    index: '/webgl2',
     detail: {
-      index: "/webgl2/index",
+      index: '/webgl2/index'
     }
+  },
+  three: {
+    index: '/three',
+    one: '/three/one'
+  },
+  test: {
+    index: '/test'
   },
   404: '*'
 }
